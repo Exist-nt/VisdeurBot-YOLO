@@ -47,6 +47,7 @@ cd VisdeurBot-YOLO
 
 Run the detection script:
 > The full instructions still need to be completed for the YOLO model.
+> Requires NumPy 1.26.4
 
 ```
 ```
