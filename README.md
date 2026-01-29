@@ -20,22 +20,24 @@ This model can detect the following species of fish, identified as being the mos
 - Winde (Ide)
  
 # Dependencies
-This model must be run on an Nvidia Tegra system with the jetson-inference packages and the latest release of L4T Ubuntu installed.
+This model must be run on an Nvidia Tegra system with the latest release of L4T Ubuntu, Cuda, and the Ultralytics package installed.
 
-To build the jetson-inference packages:
+To install the ultralytics package:
 ```
-git clone --recursive https://github.com/dusty-nv/jetson-inference
-cd jetson-inference
-mkdir build && cd build
-cmake ../
+pip install ultralytics[export]
+sudo reboot
 ```
-It is recommended to install PyTorch when the option shows up at this step, although it can still be installed later.
-
-Continue the setup as below:
+The above command will install the PyTorch and TorchVision packages, however these are not built for Jetson systems.
+To install the correct versions of these packages:
 ```
-make -j$(nproc)
-sudo make install
-sudo ldconfig
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torch-2.5.0a0+872d972e41.nv24.08-cp310-cp310-linux_aarch64.whl
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torchvision-0.20.0a0+afc54f7-cp310-cp310-linux_aarch64.whl
+```
+This software also requires NumPy 1.26.4 and SciPy 1.15.3. 
+To upgrade/downgrade these packages:
+```
+pip install --upgrade numpy==1.26.4
+pip install --upgrade scipy==1.15.3
 ```
 
 # How to use
@@ -46,16 +48,8 @@ cd VisdeurBot-YOLO
 ```
 
 Run the detection script:
-> The full instructions still need to be completed for the YOLO model.
-> Requires NumPy 1.26.4
-
 ```
+python3 run.py path/to/input
 ```
-
-The AI will then take about 5 minutes to load the model to disk, and if everything goes right you will be able to watch the AI work in real-time in a separate window.
-
-The input and output fields can be either video or photo files, but they must be in the same file format. 
-
-> NOTE: The input can also be a camera device - usually found at /dev/video0. Use `v4l2-ctl --list-devices` (part of the `v4l-utils` package) to see attached cameras if /dev/video0 does not exist. 
-
-You can also leave the output field blank, and the script will still display the results in real-time.
+The AI will then run on the given image, outputting data in the terminal as well as saving the output at `runs/detect/predict#/*.jpg`
+> NOTE: Sample images are provided in `images/`
