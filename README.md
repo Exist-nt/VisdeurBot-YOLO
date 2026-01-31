@@ -53,6 +53,7 @@ Clone and enter the Git repository:
 git clone https://github.com/Exist-nt/VisdeurBot-YOLO.git
 cd VisdeurBot-YOLO
 ```
+Download the `visdeurbot-yolo-1.1.pt` package from the [Releases](https://github.com/Exist-nt/VisdeurBot-YOLO/releases) tab, and move it to your working VisdeurBot-YOLO folder.
 
 Run the detection script:
 
