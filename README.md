@@ -1,6 +1,6 @@
 # VisdeurBot-YOLO
 
-VisdeurBot is an AI model created to help identify fish travelling through the Weerdsluis canal of Utrecht, created using the [jetson-inference](https://github.com/dusty-nv/jetson-inference) packages for the Nvidia Jetson Orin Nano SoM. This repository is a fork of the original, using Ultralytics YOLO to be compatible on the latest Jetson systems.
+VisdeurBot is an AI model created to help identify fish travelling through the Weerdsluis canal of Utrecht, created using the [jetson-inference](https://github.com/dusty-nv/jetson-inference) packages for the Nvidia Jetson Orin Nano SoM. This repository is a fork of the original, using [Ultralytics YOLO](https://github.com/ultralytics/ultralytics) to be compatible on the latest Jetson systems and other computers.
 
 Learn more about the Fish Doorbell project [here](https://visdeurbel.nl) ([English link](https://visdeurbel.nl/en)).
 
@@ -19,26 +19,33 @@ This model can detect the following species of fish, identified as being the mos
 - Snoekbaars (Pikeperch)
 - Winde (Ide)
  
-# Dependencies
-This model must be run on an Nvidia Tegra system with the latest release of L4T Ubuntu, Cuda, and the Ultralytics package installed.
+# Installing dependencies
 
-To install the ultralytics package:
+General installations will require the `ultralytics`, `numpy` and `scipy` packages:
 ```
 pip install ultralytics[export]
+pip install --upgrade numpy==1.26.4
+pip install --upgrade scipy==1.15.3
 sudo reboot
 ```
-The above command will install the PyTorch and TorchVision packages, however these are not built for Jetson systems.
-To install the correct versions of these packages:
+
+**Jetson-specific dependencies**
+
+
+For Jetson systems running JetPack 6.x, the `torch`, `torchvision` and `onnxruntime-gpu` packages must be installed from the Ultralytics repository:
 ```
 pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torch-2.5.0a0+872d972e41.nv24.08-cp310-cp310-linux_aarch64.whl
 pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/torchvision-0.20.0a0+afc54f7-cp310-cp310-linux_aarch64.whl
+pip install https://github.com/ultralytics/assets/releases/download/v0.0.0/onnxruntime_gpu-1.23.0-cp310-cp310-linux_aarch64.whl
 ```
-This software also requires NumPy 1.26.4 and SciPy 1.15.3. 
-To upgrade/downgrade these packages:
+Due to a dependency issue, the `cuSPARSElt` package must also be installed from the Nvidia repository:
 ```
-pip install --upgrade numpy==1.26.4
-pip install --upgrade scipy==1.15.3
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/arm64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt-get -y install libcusparselt0 libcusparselt-dev
 ```
+
 
 # How to use
 Clone and enter the Git repository: 
@@ -48,8 +55,23 @@ cd VisdeurBot-YOLO
 ```
 
 Run the detection script:
+
+**For CUDA devices:**
 ```
-python3 run.py path/to/input
+python3 run-cuda.py /path/to/input
 ```
+
+**For Apple Silicon devices:**
+```
+python3 run-mps.py /path/to/input
+```
+
+**For any other devices (CPU inference):**
+> This method is not recommended for speed reasons, but it will work.
+```
+python3 run-cpu.py path/to/input
+```
+
+
 The AI will then run on the given image, outputting data in the terminal as well as saving the output at `runs/detect/predict#/*.jpg`
 > NOTE: Sample images are provided in `images/`
