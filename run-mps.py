@@ -15,4 +15,4 @@ except:
 	parser.print_help()
 	sys.exit(0)
 
-model.predict(args.input, save=True, device="mps")
+model.predict(args.input, save=True, device="mps", save_dir="images/runs")
