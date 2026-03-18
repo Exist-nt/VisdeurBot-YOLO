@@ -53,26 +53,26 @@ Clone and enter the Git repository:
 git clone https://github.com/Exist-nt/VisdeurBot-YOLO.git
 cd VisdeurBot-YOLO
 ```
-Download the `visdeurbot-yolo-x.x.pt` package from the [Releases](https://github.com/Exist-nt/VisdeurBot-YOLO/releases) tab, and move it to your working VisdeurBot-YOLO folder.
+Download the `visdeurbot-yolo.pt` package from the [Releases](https://github.com/Exist-nt/VisdeurBot-YOLO/releases) tab, and move it to your working VisdeurBot-YOLO folder.
 
 Run the detection script:
 
 **For CUDA devices:**
 ```
-python3 run-cuda.py /path/to/input
+python3 run-cuda.py path/to/input path/to/output
 ```
 
 **For Apple Silicon devices:**
 ```
-python3 run-mps.py /path/to/input
+python3 run-mps.py path/to/input path/to/output
 ```
 
 **For any other devices (CPU inference):**
 > This method is not recommended for speed reasons, but it will work.
 ```
-python3 run-cpu.py path/to/input
+python3 run-cpu.py path/to/input path/to/output
 ```
 
 
-The AI will then run on the given image, outputting data in the terminal as well as saving the output at `runs/detect/predict#/*.jpg`
+The AI will then run on the given image, outputting data in the terminal as well as saving the output at the specified location.
 > NOTE: Sample images are provided in `images/`
